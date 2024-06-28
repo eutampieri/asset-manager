@@ -2,8 +2,6 @@
 if($_SERVER["REQUEST_METHOD"] == "POST") {
 	// Add asset
 	require_once("../db.php");
-	var_dump($_FILES);
-	var_dump($_REQUEST);
 	$data = file_get_contents($_FILES["file"]["tmp_name"]);
 	$mime = $_FILES["file"]["type"];
 	$name = $_FILES["file"]["name"];

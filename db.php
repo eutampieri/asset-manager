@@ -72,3 +72,37 @@ function get_attachment($id) {
 	$data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 	return count($data) == 1 ? $data[0] : null;
 }
+
+function add_kv_pair($asset, $key, $value) {
+	$db = new PDO(get_db_filename());
+	$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+	$stmt = $db->prepare("INSERT INTO kv(asset_id, key, value) VALUES(?, ?, ?);");
+	$stmt->execute([$asset, $key, $value]);
+}
+
+function get_frequent_kv_keys() {
+	$db = new PDO(get_db_filename());
+	$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+	$stmt = $db->prepare("SELECT key, COUNT(key) AS n FROM kv GROUP BY key ORDER BY n DESC;");
+	$stmt->execute([]);
+	$res = $stmt->fetchAll(PDO::FETCH_ASSOC);
+	$keys = [];
+	foreach($res as $r) {
+		array_push($keys, $r["key"]);
+	}
+	return $keys;
+}
+
+function get_frequent_kv_values($key) {
+	$db = new PDO(get_db_filename());
+	$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+	$stmt = $db->prepare("SELECT value, COUNT(value) AS n FROM kv WHERE key = ? GROUP BY value ORDER BY n DESC;");
+	$stmt->execute([$key]);
+	$res = $stmt->fetchAll(PDO::FETCH_ASSOC);
+	$values = [];
+	foreach($res as $r) {
+		array_push($values, $r["value"]);
+	}
+	return $values;
+}
+

@@ -11,6 +11,7 @@ require_once("../templates/header.php");
 	<tr>
 		<th scope="row">Serial number</th>
 		<td><?=$asset["serial_number"]?></td>
+		<td></td>
 	</tr>
 <?php
 foreach($asset["kv"] as $pair) {
@@ -18,6 +19,7 @@ foreach($asset["kv"] as $pair) {
     <tr>
       <th scope="row"><?=$pair["key"]?></th>
       <td><?=$pair["value"]?></td>
+      <td></td>
     </tr>
 <?php }?>
   </tbody>
