@@ -44,11 +44,11 @@ function get_asset($id) {
 	
 	if(count($data) == 1) {
 		$data = $data[0];
-		$kv_stmt = $db->prepare("SELECT * FROM kv WHERE asset_id = ?");
+		$kv_stmt = $db->prepare("SELECT id, key, value FROM kv WHERE asset_id = ?");
 		$kv_stmt->execute([$id]);
 		$data["kv"] = $kv_stmt->fetchAll(PDO::FETCH_ASSOC); 
 		
-		$attachments_stmt = $db->prepare("SELECT id, file_name FROM attachments WHERE asset_id = ?");
+		$attachments_stmt = $db->prepare("SELECT id, file_name, mime_type FROM attachments WHERE asset_id = ?");
 		$attachments_stmt->execute([$id]);
 		$data["attachments"] = $attachments_stmt->fetchAll(PDO::FETCH_ASSOC); 
 	} else {
